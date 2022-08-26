@@ -1,0 +1,603 @@
+#+STARTUP: fold indent
+#+OPTIONS: tex:t toc:2 H:6 ^:{}
+
+#+TITLE: Unix Shell
+#+AUTHOR: Derek Devnich
+#+BEGIN_SRC bash
+
+#+END_SRC
+#+BEGIN_EXAMPLE
+#+END_EXAMPLE
+
+* Introducing the shell
+Powerpoint slides: "Automate all the things!"
+
+** Reasons to use the shell
+1. Automate basic tasks
+2. Underlies many other open source languages and applications; knowing the shell will make you better at using them
+3. System administration, HPC, and remote computing
+4. Many special-purpose tools become available to you
+
+** The past is always with us
+The design and terminology of modern computers is based on metaphors from a previous age.
+1. Files and folders
+2. Teletype input and output
+3. Modern touch devices don't expose the file system, so you may be less comfortable with navigating directory trees than people whose primary computing devices were desktop computers
+
+** So what is a "shell"?
+- Broadly speaking, there is a tension between making computer systems fast and making them easy to use.
+- A common solution is to create a 2-layer architecture: A fast, somewhat opaque core surrounded by a more friendly scriptable interface (also referred to as "hooks" or an "API"). Examples of this include video games, Emacs and other highly customizable code editors, and high-level special-purpose languages like Stata and Mathematica.
+- Unix shell is the scriptable *shell* around the operating system. It provides a simple interface for making the operating system do work, without having to know exactly how it accomplishes that work.
+
+* Navigating files and directories
+** File system layout
+Powerpoint slides: "Navigating files and directories"
+
+** Who are you?
+#+BEGIN_SRC bash
+whoami
+#+END_SRC
+
+** Where are you?
+1. Current working directory
+   #+BEGIN_SRC bash
+   pwd                             # Print Working Directory
+   #+END_SRC
+
+2. By default, this is probably your home directory (discuss how to view this in Finder or File Explorer)
+   1. Linux
+      #+BEGIN_EXAMPLE
+      /home/nelle
+      #+END_EXAMPLE
+
+   2. Mac OS
+      #+BEGIN_EXAMPLE
+      /Users/nelle
+      #+END_EXAMPLE
+
+   3. Windows
+      #+BEGIN_EXAMPLE
+      C:\Users\nelle
+      #+END_EXAMPLE
+
+** What's in this directory?
+1. List the contents of the directory
+   #+BEGIN_SRC bash
+   ls                              # List directory contents
+   #+END_SRC
+
+2. Command flags modify what a command does
+   #+BEGIN_SRC bash
+   ls -F     # show category markers
+   #+END_SRC
+
+** Getting help
+#+BEGIN_SRC bash
+ls --help                       # In-line help info; should work in Windows
+man ls                          # Manual for "ls"
+#+END_SRC
+
+- You can navigate through the man page using the space bar and arrow keys
+- Quit man with "q"
+- Online references are available for Windows users who don't have man pages: https://linux.die.net/
+
+** Exploring other directories
+1. When a command is followed by an argument, it acts on that argument.
+   #+BEGIN_SRC bash
+   ls -F Desktop                   # get contents of folder
+   ls -F Desktop/shell-lesson-data # get contents of subfolder
+    #+END_SRC
+
+2. Move down the directory tree
+   #+BEGIN_SRC bash
+   cd Desktop
+   cd shell-lesson-data
+   cd exercise-data
+   #+END_SRC
+
+3. Now that you're "in" a new location, the context for your commands is different
+   #+BEGIN_SRC bash
+   pwd
+   ls -F
+
+   # This produces an error because the folder is in a different location
+   # relative to the working directory
+   cd shell-lesson-data
+   #+END_SRC
+
+4. Move up the directory tree
+   ~.~ is shorthand for "current directory"; ~..~ is shorthand for "parent directory"
+   #+BEGIN_SRC bash
+   # Show hidden files, including current and parent directories
+   ls -a
+
+   # You can combine flags
+   ls -Fa
+
+   # Move to parent directory
+   cd ..
+   #+END_SRC
+
+5. Shortcuts
+   #+BEGIN_SRC bash
+   cd ~   # go to home directory
+   cd -   # go back to previous directory
+   #+END_SRC
+
+** Relative vs. absolute paths
+1. An absolute path specifies a location from the root of the file system.
+2. A relative path specifies a location starting from the current location.
+
+* Working with files and directories
+** Creating directories
+1. See where we are and what we have
+   #+BEGIN_SRC bash
+   pwd
+   cd exercise-data/writing  # traverse several layers at once
+   ls -F
+   #+END_SRC
+
+2. Create a directory
+   #+BEGIN_SRC bash
+   # Make a subdirectory
+   mkdir thesis
+   ls -F
+
+   # Make multiple directories; create intermediate dirs as required
+   mkdir -p ../project/data ../project/results
+
+   # Show all directory contents recursively
+   ls -FR ../project
+   #+END_SRC
+
+3. Create a text file. Note that everything is available through the file browser and the terminal.
+   #+BEGIN_SRC bash
+   cd thesis
+   nano draft.txt
+   #+END_SRC
+
+   #+BEGIN_EXAMPLE
+   This is my first draft
+   boop beep boop
+   #+END_EXAMPLE
+
+4. Edit with Notepad / TextEdit, then re-edit with nano.
+
+** Moving files and directories
+1. Move our file to a new location
+   #+BEGIN_SRC bash
+   cd ~/Desktop/shell-lesson-data/exercise-data/writing
+
+   # Rename the file by moving it
+   mv thesis/draft.txt thesis/quotes.txt
+
+   # Verify the new file name
+   ls thesis
+
+   # You can also specify the exact file name
+   ls thesis/quotes.txt
+   #+END_SRC
+
+2. Move our file to the current working directory
+   #+BEGIN_SRC bash
+   mv thesis/quotes.txt .
+   ls thesis/quotes.txt # Not here anymore
+   ls                   # now here
+   #+END_SRC
+
+** Copying files and directories
+1. Copy a single file
+   #+BEGIN_SRC bash
+   cp quotes.txt thesis/quotations.txt
+   ls thesis
+   ls
+
+   # Alternatively
+   ls quotes.txt thesis/quotations.txt
+   #+END_SRC
+
+2. Copy a directory recursively
+   #+BEGIN_SRC bash
+   cp -r thesis thesis_backup
+   ls thesis thesis_backup
+   #+END_SRC
+
+** Removing files and directories
+1. Remove a file
+   #+BEGIN_SRC bash
+   rm quotes.txt
+   ls quotes.txt
+   #+END_SRC
+
+2. Remove a file interactively
+   Deletion is forever!
+   #+BEGIN_SRC bash
+   rm -i thesis_backup/quotations.txt
+   #+END_SRC
+
+3. Remove a directory and its contents
+   #+BEGIN_SRC bash
+   rm thesis      # This gives un an error
+   rm -ri thesis  # Remove recursively
+   #+END_SRC
+
+** Create a backup archive
+Deletion is forever. Consider making a backup archive as part of your workflow.
+1. Create an archive with ~tar~ ("tape archive").
+   #+BEGIN_SRC bash
+   cd ~/Desktop/shell-lesson-data/exercise-data/
+
+   # [c]reate a new archive with the given [f]ilename
+   tar -cf writing.tar writing/
+   #+END_SRC
+
+2. Create a compressed (zipped) archive
+   ~tar~ is an old utility and can be finicky about the order of flags.
+   #+BEGIN_SRC bash
+   # [a]uto-compress the archive based on its file extension
+   tar -acf writing.zip writing/
+
+   # FYI, you may also see
+   tar -a -cf writing.zip writing/
+
+   # FYI, linux servers frequently use g[z]ip
+   tar -z -cf writing.tgz writing/
+   #+END_SRC
+
+3. Extract your archive
+   #+BEGIN_SRC bash
+   mv writing writing_backup
+
+   # e[x]tract the archive to get the original files back
+   tar -xf writing.zip
+
+   # Compare the old and restored directories
+   ls writing
+   ls writing_backup
+   #+END_SRC
+
+4. There are many useful utilities: https://www.gnu.org/software/coreutils/manual/coreutils.html
+
+** Operations with multiple files and directories
+1. Copy with multiple file names
+   #+BEGIN_SRC bash
+   cd ~/Desktop/shell-lesson-data/exercise-data/
+
+   cp creatures/minotaur.dat creatures/unicorn.dat creatures_backup/
+   #+END_SRC
+
+2. Copy using globs ("globals")
+   You can match a single character with ? or unlimited characters with *. This is an example of /shell expansion/.
+   #+BEGIN_SRC bash
+   mkdir proteins_backup
+
+   # The shell expands *.pdb into the list of all matching files, then does `cp`
+   cp proteins/*.pdb proteins_backup/
+   #+END_SRC
+
+* Pipes and filters
+The "Unix Philosophy" is to combine many small tools that do one job into a processing pipeline.
+** Motivating example with ~wc~
+FYI, .pdb is Protein Data Bank format
+
+1. Count words in a file using ~wc~
+   #+BEGIN_SRC bash
+   cd ~/Desktop/shell-lesson-data/exercise-data/proteins/
+   ls
+
+   # Inspect cubane.pdb
+   cat cubane.pdb
+
+   # [w]ord [c]ount for cubane.pdb
+   wc cubane.pdb
+   #+END_SRC
+
+2. Run ~wc~ for all files
+   #+BEGIN_SRC bash
+   # Run the command with default options
+   wc *.pdb
+
+
+   wc -l *.pdb # lines
+   wc -c *.pdb # characters
+   wc -w *.pdb # words
+   #+END_SRC
+
+** Capturing output from commands
+#+BEGIN_SRC bash
+# Redirect output to file
+wc -l *.pdb > lengths.txt
+ls lengths.txt
+cat lengths.txt       # Inspect contents
+head -n 1 lengths.txt # Inspect 1st line
+less lengths.txt      # Inspect with pager
+
+#+END_SRC
+
+** Filtering output
+1. The ~sort~ command run the file input through a filter and returns the filtered result.
+   #+BEGIN_SRC bash
+   sort lengths.txt    # alphanumeric sort (i.e. text)
+   sort -n lengths.txt # numeric sort
+   #+END_SRC
+
+2. Send filtered output to new file
+   #+BEGIN_SRC bash
+   sort -n lengths.txt > sorted_lengths.txt
+   cat sorted_lengths.txt
+   #+END_SRC
+
+3. (Optional) Append to the end of a file using ~>>~
+   #+BEGIN_SRC bash
+   cd ~/Desktop/shell-lesson-data/exercise-data/animal-counts/
+
+   # Create new file
+   head -n 3 animals.csv > animals-subset.csv
+
+   # Append to that file
+   tail -n 2 animals.csv >> animals-subset.csv
+   #+END_SRC
+
+** Passing output to another command
+Pipe output from one command directly into a second command without creating an intermediate file. This is the cornerstone of Unix workflows.
+#+BEGIN_SRC bash
+sort -n lengths.txt |  head -n 1
+#+END_SRC
+
+** Combining multiple commands
+Daisy-chain your commands together. As long as the output of command X is a legitimate input for command Y, it will work.
+#+BEGIN_SRC bash
+# Return to the beginning
+wc -l *.pdb | sort -n
+
+# Add additional commands
+wc -l *.pdb | sort -n | head -n 1
+#+END_SRC
+
+** History and pipes
+1. The terminal saves your command history (typically 500 or 1000 commands)
+   - You can see previous commands using the up/down arrows
+   - You can edit the command that's currently visible and run it
+
+2. Once your command history gets big, you might want to search it:
+   #+BEGIN_SRC bash
+   history           # or history -1000 in zsh on Mac
+   history | grep ls # pipe the output of history into search
+   #+END_SRC
+
+* Shell scripts
+We should save this stuff and reuse it.
+** Creating and running a script
+1. Create a new script
+   #+BEGIN_SRC bash
+   cd proteins
+   nano middle.sh
+   #+END_SRC
+
+2. Edit the script file and save
+   #+BEGIN_SRC bash
+   # Get lines 11-15
+   head -n 15 octane.pdb | tail -n 5
+   #+END_SRC
+
+3. Execute the script
+   #+BEGIN_SRC bash
+   bash middle.sh
+   #+END_SRC
+
+** Generalize your script
+1. Use a special variable to run the script on any file (~$1~ returns the value of a variable; ~""~ ensures that it works if there are spaces.)
+   #+BEGIN_SRC bash
+   nano middle.sh
+   #+END_SRC
+
+   #+BEGIN_SRC bash
+   # Use the 1st argument as your input.
+   head -n 15 "$1" | tail -n 5
+   #+END_SRC
+
+   #+BEGIN_SRC bash
+   bash middle.sh octane.pdb
+   bash middle.sh pentane.pdb
+   #+END_SRC
+
+2. Use additional ordered arguments
+   #+BEGIN_SRC bash
+   nano middle.sh
+   #+END_SRC
+
+   #+BEGIN_SRC bash
+   # Select lines from the middle of a file.
+   # Usage: bash middle.sh filename end_line num_lines
+   head -n "$2" "$1" | tail -n "$3"
+   #+END_SRC
+
+   #+BEGIN_SRC bash
+   bash middle.sh pentane.pdb 15 5
+   #+END_SRC
+
+3. Use unlimited arguments
+   #+BEGIN_SRC bash
+   nano sorted.sh
+   #+END_SRC
+
+   #+BEGIN_SRC bash
+   # Sort files by their length.
+   # Usage: bash sorted.sh one_or_more_filenames
+   wc -l "$@" | sort -n
+   #+END_SRC
+
+   #+BEGIN_SRC bash
+   bash sorted.sh *.pdb ../creatures/*.dat
+   #+END_SRC
+
+** (Optional) Text processing with Unix tools
+#+BEGIN_SRC bash
+cd ~/Desktop/shell-lesson-data/exercise-data/animal-counts/
+
+# Get the second column of the CSV
+cut -d , -f 2 animals.csv
+
+# Get the unique values
+cut -d , -f 2 animals.csv | uniq
+
+# Sort them
+cut -d , -f 2 animals.csv | uniq
+#+END_SRC
+
+* Loops
+Don't repeat yourself.
+
+** A basic loop
+#+BEGIN_SRC bash
+cd ~/Desktop/shell-lesson-data/exercise-data/creatures/
+nano latin.sh
+#+END_SRC
+
+#+BEGIN_SRC bash
+for filename in basilisk.dat minotaur.dat unicorn.dat
+do
+    # Extract second line of file
+    head -n 2 $filename | tail -n 1
+done
+#+END_SRC
+
+#+BEGIN_SRC bash
+bash latin.sh
+#+END_SRC
+
+** Simplify your loop with globs
+#+BEGIN_SRC bash
+nano latin.sh
+#+END_SRC
+
+#+BEGIN_SRC bash
+for filename in *.dat
+do
+    # Extract second line of file
+    head -n 2 $filename | tail -n 1
+done
+#+END_SRC
+
+#+BEGIN_SRC bash
+bash latin.sh
+#+END_SRC
+
+** Generalize your loop with unlimited arguments
+1. Create a separate directory for your scripts so that you can find them
+   #+BEGIN_SRC bash
+   cd ~/Desktop/shell-lesson-data/exercise-data/
+   mkdir scripts
+   cd scripts
+   nano aggregate.sh
+   #+END_SRC
+
+2. Write a script that takes arbitrary arguments
+   #+BEGIN_SRC bash
+   for filename in "$@"
+   do
+       echo $filename
+   done
+   #+END_SRC
+
+3. Run the script against the contents of a different directory
+   #+BEGIN_SRC bash
+   bash aggregate.sh ../proteins/*.pdb
+   #+END_SRC
+
+4. Do work in the script
+   #+BEGIN_SRC bash
+   nano aggregate.sh
+   #+END_SRC
+
+   #+BEGIN_SRC bash
+   for filename in "$@"
+   do
+       echo $filename
+       cat $filename >> alkanes.pdb
+   done
+   #+END_SRC
+
+   #+BEGIN_SRC bash
+   bash aggregate.sh ../proteins/*.pdb
+   #+END_SRC
+
+* Finding things
+** Find
+*** Find everything
+#+BEGIN_SRC bash
+cd ~/Desktop/shell-lesson-data/exercise-data/
+find .
+#+END_SRC
+
+*** Find by type
+#+BEGIN_SRC bash
+# List all directories
+find . -type d
+
+# List all files
+find . -type f
+#+END_SRC
+
+*** Find files
+#+BEGIN_SRC bash
+# Do shell expansion, then run command
+find . -name *.txt
+
+# Prevent shell expansion and match wildcard
+find . -name "*.txt"
+#+END_SRC
+
+** Grep
+
+* Shell extras
+** SSH
+** Permissions
+** Job control
+** Aliases and bash customization
+** More on shell variables
+** Mini-languages (grep, sed, AWK)
+** Shell expansion
+** Conditional tests
+
+* Credits
+1. The Unix Shell: https://swcarpentry.github.io/shell-novice/
+
+* References
+1. Instructor notes for "The Unix Shell": https://swcarpentry.github.io/shell-novice/guide/
+2. A list of command line utilities: https://ss64.com/bash/
+3. GNU core utilities: https://www.gnu.org/software/coreutils/manual/coreutils.html
+4. Bash guide: https://mywiki.wooledge.org/BashGuide
+5. Shell redirection operators(1): https://www.redhat.com/sysadmin/linux-shell-redirection-pipelining
+6. Shell redirection operators (2): https://www.gnu.org/software/bash/manual/html_node/Redirections.html
+
+* Data Sources
+1. Lesson data: http://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip
+
+* COMMENT How to export this document to other formats
+** Export to Markdown using Emacs Org mode
+Do this if you want a table of contents on Github.
+#+BEGIN_EXAMPLE
+M-x org-md-export-to-markdown
+#+END_EXAMPLE
+
+** Export to Markdown using Pandoc
+Do this if you want code syntax highlighting and a table of contents on Github.
+*** Generate generic Markdown file
+#+BEGIN_SRC bash
+pandoc README.org -o tmp.md
+#+END_SRC
+
+*** Edit generic Markdown file to remove illegal front matter
+1. Org directives
+2. Anything that isn't part of the document structure (e.g. TODO items)
+
+*** Generate Github Markdown with table of contents
+#+BEGIN_SRC bash
+pandoc -f markdown --toc --toc-depth=2 -s tmp.md -o README.md
+#+END_SRC
+
+*** Find and replace code block markers in final document
+#+BEGIN_EXAMPLE
+M-x qrr ` {.bash}` `bash`
+#+END_EXAMPLE
