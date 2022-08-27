@@ -1,7 +1,8 @@
 -   [Introducing the shell](#introducing-the-shell)
     -   [Reasons to use the shell](#reasons-to-use-the-shell)
+    -   [\"Unix\"](#unix)
+    -   [\"Shell\"](#shell)
     -   [The past is always with us](#the-past-is-always-with-us)
-    -   [So what is a \"shell\"?](#so-what-is-a-shell)
 -   [Navigating files and
     directories](#navigating-files-and-directories)
     -   [File system layout](#file-system-layout)
@@ -40,47 +41,36 @@
     -   [Simplify your loop with globs](#simplify-your-loop-with-globs)
     -   [Generalize your loop with unlimited
         arguments](#generalize-your-loop-with-unlimited-arguments)
+    -   [Make your script executable](#make-your-script-executable)
 -   [Finding things](#finding-things)
     -   [Find](#find)
     -   [Grep](#grep)
 -   [Shell extras](#shell-extras)
-    -   [SSH](#ssh)
-    -   [Permissions](#permissions)
-    -   [Job control](#job-control)
-    -   [Aliases and bash
-        customization](#aliases-and-bash-customization)
-    -   [More on shell variables](#more-on-shell-variables)
-    -   [Mini-languages (grep, sed, AWK)](#mini-languages-grep-sed-awk)
-    -   [Shell expansion](#shell-expansion)
-    -   [Conditional tests](#conditional-tests)
 -   [Credits](#credits)
 -   [References](#references)
 -   [Data Sources](#data-sources)
 
 # Introducing the shell
 
-Powerpoint slides: \"Automate all the things!\"
-
 ## Reasons to use the shell
 
 1.  Automate basic tasks
-2.  Underlies many other open source languages and applications; knowing
-    the shell will make you better at using them
-3.  System administration, HPC, and remote computing
-4.  Many special-purpose tools become available to you
+2.  Underlies many other open source languages and applications and can
+    be used to glue them together
+3.  Essential for system administration, remote computing, and
+    high-performance computing
+4.  Many concise special-purpose tools that can make your life easier
+5.  Complements more fully-featured application programming languages
 
-## The past is always with us
+## \"Unix\"
 
-The design and terminology of modern computers is based on metaphors
-from a previous age.
+Powerpoint slides: Unix family tree
 
-1.  Files and folders
-2.  Teletype input and output
-3.  Modern touch devices don\'t expose the file system, so you may be
-    less comfortable with navigating directory trees than people whose
-    primary computing devices were desktop computers
+1.  Unix-like operation systems share a common architecture and layout
+2.  Roughly compatible, with similar (or identical) shells and tools
+3.  The environment in which most open-source software was written
 
-## So what is a \"shell\"?
+## \"Shell\"
 
 -   Broadly speaking, there is a tension between making computer systems
     fast and making them easy to use.
@@ -93,6 +83,17 @@ from a previous age.
 -   Unix shell is the scriptable **shell** around the operating system.
     It provides a simple interface for making the operating system do
     work, without having to know exactly how it accomplishes that work.
+
+## The past is always with us
+
+The design and terminology of modern computers is based on metaphors
+from a previous age.
+
+1.  Files and folders
+2.  Teletype input and output
+3.  Modern touch devices don\'t expose the file system, so you may be
+    less comfortable with navigating directory trees than people whose
+    primary computing devices were desktop computers
 
 # Navigating files and directories
 
@@ -683,6 +684,23 @@ bash latin.sh
     bash aggregate.sh ../proteins/*.pdb
     ```
 
+## Make your script executable
+
+``` bash
+# List file in long format to show current permissions
+ls -l aggregate.sh
+
+# Change file mode (i.e. permissions)
+# User can read/write/execute, Group and Other can read
+chmod u=rwx,go=r aggregate.sh
+
+# Show changed permissions
+ls -l aggregate.sh
+
+# Invoke script
+./aggregate.sh ../proteins/*.pdb
+```
+
 # Finding things
 
 ## Find
@@ -716,23 +734,21 @@ find . -name "*.txt"
 
 ## Grep
 
+TBD
+
 # Shell extras
 
-## SSH
+Consult the Wooledge Bash Guide (see references below) for more on these
+topics:
 
-## Permissions
-
-## Job control
-
-## Aliases and bash customization
-
-## More on shell variables
-
-## Mini-languages (grep, sed, AWK)
-
-## Shell expansion
-
-## Conditional tests
+1.  SSH
+2.  Permissions
+3.  Job control
+4.  Aliases and bash customization
+5.  Shell variables
+6.  Mini-languages (grep, sed, AWK)
+7.  Shell expansion
+8.  Conditional tests
 
 # Credits
 
