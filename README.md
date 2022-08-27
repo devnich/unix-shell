@@ -501,7 +501,7 @@ wc -l *.pdb | sort -n | head -n 1
 2.  Once your command history gets big, you might want to search it:
 
     ``` bash
-    history           # or history -1000 in zsh on Mac
+    history           # or `history -1000` in zsh on Mac
     history | grep ls # pipe the output of history into search
     ```
 
