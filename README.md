@@ -36,6 +36,8 @@
     -   [Generalize your script](#generalize-your-script)
     -   [(Optional) Text processing with Unix
         tools](#optional-text-processing-with-unix-tools)
+    -   [(Optional) Language interpreters are also shell
+        commands](#optional-language-interpreters-are-also-shell-commands)
 -   [Loops](#loops)
     -   [A basic loop](#a-basic-loop)
     -   [Simplify your loop with globs](#simplify-your-loop-with-globs)
@@ -591,11 +593,19 @@ cd ~/Desktop/shell-lesson-data/exercise-data/animal-counts/
 # Get the second column of the CSV
 cut -d , -f 2 animals.csv
 
-# Get the unique values
-cut -d , -f 2 animals.csv | uniq
+# Sort the values
+cut -d , -f 2 animals.csv | sort
 
-# Sort them
-cut -d , -f 2 animals.csv | uniq
+# Get unique values (`uniq` requires values to be adjacent to one another)
+cut -d , -f 2 animals.csv | sort | uniq
+```
+
+## (Optional) Language interpreters are also shell commands
+
+``` bash
+# 1. Run a python script that produces a .csv as output
+# 2. Extract the 2nd column of that .csv and get the unique values
+python script.py | cut -d , -f 2 | sort | uniq
 ```
 
 # Loops
@@ -734,7 +744,9 @@ find . -name "*.txt"
 
 ## Grep
 
-TBD
+Grep is a powerful tool for matching text patterns by using *regular
+expressions*. You can find introductory documentation for regular
+expressions in the References section.
 
 # Shell extras
 
@@ -766,6 +778,8 @@ topics:
     <https://www.redhat.com/sysadmin/linux-shell-redirection-pipelining>
 6.  Shell redirection operators (2):
     <https://www.gnu.org/software/bash/manual/html_node/Redirections.html>
+7.  Grep regular expressions:
+    <https://www.gnu.org/software/grep/manual/html_node/Regular-Expressions.html>
 
 # Data Sources
 
