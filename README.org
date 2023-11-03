@@ -231,8 +231,7 @@ Deletion is forever. Consider making a backup archive as part of your workflow.
    tar -cf writing.tar writing/
    #+END_SRC
 
-2. Create a compressed (zipped) archive
-   ~tar~ is an old utility and can be finicky about the order of flags.
+2. Create a compressed (zipped) archive.
    #+BEGIN_SRC bash
    # [a]uto-compress the archive based on its file extension
    tar -acf writing.zip writing/
@@ -243,6 +242,8 @@ Deletion is forever. Consider making a backup archive as part of your workflow.
    # FYI, linux servers frequently use g[z]ip
    tar -z -cf writing.tgz writing/
    #+END_SRC
+
+      ~tar~ is an old utility and can be finicky about the order of flags.
 
 3. Extract your archive
    #+BEGIN_SRC bash
@@ -278,7 +279,7 @@ Deletion is forever. Consider making a backup archive as part of your workflow.
 * Pipes and filters
 The "Unix Philosophy" is to combine many small tools that do one job into a processing pipeline.
 ** Motivating example with ~wc~
-FYI, .pdb is Protein Data Bank format
+FYI, ~.pdb~ is the Protein Data Bank format
 
 1. Count words in a file using ~wc~
    #+BEGIN_SRC bash
@@ -315,7 +316,7 @@ less lengths.txt      # Inspect with pager
 #+END_SRC
 
 ** Filtering output
-1. The ~sort~ command run the file input through a filter and returns the filtered result.
+1. The ~sort~ command runs the file input through a filter and returns the filtered result.
    #+BEGIN_SRC bash
    sort lengths.txt    # alphanumeric sort (i.e. text)
    sort -n lengths.txt # numeric sort
@@ -589,41 +590,36 @@ Consult the Wooledge Bash Guide (see references below) for more on these topics:
 1. The Unix Shell: https://swcarpentry.github.io/shell-novice/
 
 * References
-1. Instructor notes for "The Unix Shell": https://swcarpentry.github.io/shell-novice/guide/
-2. A list of command line utilities: https://ss64.com/bash/
-3. GNU core utilities: https://www.gnu.org/software/coreutils/manual/coreutils.html
-4. Bash guide: https://mywiki.wooledge.org/BashGuide
-5. Shell redirection operators(1): https://www.redhat.com/sysadmin/linux-shell-redirection-pipelining
-6. Shell redirection operators (2): https://www.gnu.org/software/bash/manual/html_node/Redirections.html
-7. Grep regular expressions: https://www.gnu.org/software/grep/manual/html_node/Regular-Expressions.html
+1. A list of command line utilities: https://ss64.com/bash/
+2. GNU core utilities: https://www.gnu.org/software/coreutils/manual/coreutils.html
+3. Bash guide: https://mywiki.wooledge.org/BashGuide
+4. Shell redirection operators(1): https://www.redhat.com/sysadmin/linux-shell-redirection-pipelining
+5. Shell redirection operators (2): https://www.gnu.org/software/bash/manual/html_node/Redirections.html
+6. Grep regular expressions: https://www.gnu.org/software/grep/manual/html_node/Regular-Expressions.html
+7. Using zsh on MacOS: https://scriptingosx.com/2019/06/moving-to-zsh/
 
 * Data Sources
 1. Lesson data: http://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip
 
 * COMMENT How to export this document to other formats
-** Export to Markdown using Emacs Org mode
+** Export to Github-flavored Markdown using Pandoc
+Do this if you want code syntax highlighting and a table of contents on Github.
+
+1. Generate Markdown file
+   #+BEGIN_SRC bash
+   pandoc -f org -t gfm --toc --toc-depth=2 --wrap=none -N -s README.org -o README.md
+   #+END_SRC
+
+2. Delete anything above the Table of Contents, e.g.:
+   #+BEGIN_EXAMPLE
+   -------------------------
+     Programming in Python
+     Derek Devnich
+   -------------------------
+   #+END_EXAMPLE
+
+** INFO Export to Markdown using Emacs Org mode
 Do this if you want a table of contents on Github.
 #+BEGIN_EXAMPLE
 M-x org-md-export-to-markdown
-#+END_EXAMPLE
-
-** Export to Markdown using Pandoc
-Do this if you want code syntax highlighting and a table of contents on Github.
-*** Generate generic Markdown file
-#+BEGIN_SRC bash
-pandoc README.org -o tmp.md
-#+END_SRC
-
-*** Edit generic Markdown file to remove illegal front matter
-1. Org directives
-2. Anything that isn't part of the document structure (e.g. TODO items)
-
-*** Generate Github Markdown with table of contents
-#+BEGIN_SRC bash
-pandoc -f markdown --toc --toc-depth=2 -s tmp.md -o README.md
-#+END_SRC
-
-*** Find and replace code block markers in final document
-#+BEGIN_EXAMPLE
-M-x qrr ` {.bash}` `bash`
 #+END_EXAMPLE

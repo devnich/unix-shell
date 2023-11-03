@@ -1,70 +1,59 @@
--   [Introducing the shell](#introducing-the-shell)
-    -   [Reasons to use the shell](#reasons-to-use-the-shell)
-    -   [\"Unix\"](#unix)
-    -   [\"Shell\"](#shell)
-    -   [The past is always with us](#the-past-is-always-with-us)
--   [Navigating files and
-    directories](#navigating-files-and-directories)
-    -   [File system layout](#file-system-layout)
-    -   [Who are you?](#who-are-you)
-    -   [Where are you?](#where-are-you)
-    -   [What\'s in this directory?](#whats-in-this-directory)
-    -   [Getting help](#getting-help)
-    -   [Exploring other directories](#exploring-other-directories)
-    -   [Relative vs. absolute paths](#relative-vs.-absolute-paths)
--   [Working with files and
-    directories](#working-with-files-and-directories)
-    -   [Creating directories](#creating-directories)
-    -   [Moving files and directories](#moving-files-and-directories)
-    -   [Copying files and directories](#copying-files-and-directories)
-    -   [Removing files and
-        directories](#removing-files-and-directories)
-    -   [Create a backup archive](#create-a-backup-archive)
-    -   [Operations with multiple files and
-        directories](#operations-with-multiple-files-and-directories)
--   [Pipes and filters](#pipes-and-filters)
-    -   [Motivating example with `wc`](#motivating-example-with-wc)
-    -   [Capturing output from
-        commands](#capturing-output-from-commands)
-    -   [Filtering output](#filtering-output)
-    -   [Passing output to another
-        command](#passing-output-to-another-command)
-    -   [Combining multiple commands](#combining-multiple-commands)
-    -   [History and pipes](#history-and-pipes)
--   [Shell scripts](#shell-scripts)
-    -   [Creating and running a script](#creating-and-running-a-script)
-    -   [Generalize your script](#generalize-your-script)
-    -   [(Optional) Text processing with Unix
-        tools](#optional-text-processing-with-unix-tools)
-    -   [(Optional) Language interpreters are also shell
-        commands](#optional-language-interpreters-are-also-shell-commands)
--   [Loops](#loops)
-    -   [A basic loop](#a-basic-loop)
-    -   [Simplify your loop with globs](#simplify-your-loop-with-globs)
-    -   [Generalize your loop with unlimited
-        arguments](#generalize-your-loop-with-unlimited-arguments)
-    -   [Make your script executable](#make-your-script-executable)
--   [Finding things](#finding-things)
-    -   [Find](#find)
-    -   [Grep](#grep)
--   [Shell extras](#shell-extras)
--   [Credits](#credits)
--   [References](#references)
--   [Data Sources](#data-sources)
+- <a href="#introducing-the-shell" id="toc-introducing-the-shell"><span class="toc-section-number">1</span> Introducing the shell</a>
+  - <a href="#reasons-to-use-the-shell" id="toc-reasons-to-use-the-shell"><span class="toc-section-number">1.1</span> Reasons to use the shell</a>
+  - <a href="#unix" id="toc-unix"><span class="toc-section-number">1.2</span> "Unix"</a>
+  - <a href="#shell" id="toc-shell"><span class="toc-section-number">1.3</span> "Shell"</a>
+  - <a href="#the-past-is-always-with-us" id="toc-the-past-is-always-with-us"><span class="toc-section-number">1.4</span> The past is always with us</a>
+- <a href="#navigating-files-and-directories" id="toc-navigating-files-and-directories"><span class="toc-section-number">2</span> Navigating files and directories</a>
+  - <a href="#file-system-layout" id="toc-file-system-layout"><span class="toc-section-number">2.1</span> File system layout</a>
+  - <a href="#who-are-you" id="toc-who-are-you"><span class="toc-section-number">2.2</span> Who are you?</a>
+  - <a href="#where-are-you" id="toc-where-are-you"><span class="toc-section-number">2.3</span> Where are you?</a>
+  - <a href="#whats-in-this-directory" id="toc-whats-in-this-directory"><span class="toc-section-number">2.4</span> What's in this directory?</a>
+  - <a href="#getting-help" id="toc-getting-help"><span class="toc-section-number">2.5</span> Getting help</a>
+  - <a href="#exploring-other-directories" id="toc-exploring-other-directories"><span class="toc-section-number">2.6</span> Exploring other directories</a>
+  - <a href="#relative-vs.-absolute-paths" id="toc-relative-vs.-absolute-paths"><span class="toc-section-number">2.7</span> Relative vs. absolute paths</a>
+- <a href="#working-with-files-and-directories" id="toc-working-with-files-and-directories"><span class="toc-section-number">3</span> Working with files and directories</a>
+  - <a href="#creating-directories" id="toc-creating-directories"><span class="toc-section-number">3.1</span> Creating directories</a>
+  - <a href="#moving-files-and-directories" id="toc-moving-files-and-directories"><span class="toc-section-number">3.2</span> Moving files and directories</a>
+  - <a href="#copying-files-and-directories" id="toc-copying-files-and-directories"><span class="toc-section-number">3.3</span> Copying files and directories</a>
+  - <a href="#removing-files-and-directories" id="toc-removing-files-and-directories"><span class="toc-section-number">3.4</span> Removing files and directories</a>
+  - <a href="#create-a-backup-archive" id="toc-create-a-backup-archive"><span class="toc-section-number">3.5</span> Create a backup archive</a>
+  - <a href="#operations-with-multiple-files-and-directories" id="toc-operations-with-multiple-files-and-directories"><span class="toc-section-number">3.6</span> Operations with multiple files and directories</a>
+- <a href="#pipes-and-filters" id="toc-pipes-and-filters"><span class="toc-section-number">4</span> Pipes and filters</a>
+  - <a href="#motivating-example-with-wc" id="toc-motivating-example-with-wc"><span class="toc-section-number">4.1</span> Motivating example with <code>wc</code></a>
+  - <a href="#capturing-output-from-commands" id="toc-capturing-output-from-commands"><span class="toc-section-number">4.2</span> Capturing output from commands</a>
+  - <a href="#filtering-output" id="toc-filtering-output"><span class="toc-section-number">4.3</span> Filtering output</a>
+  - <a href="#passing-output-to-another-command" id="toc-passing-output-to-another-command"><span class="toc-section-number">4.4</span> Passing output to another command</a>
+  - <a href="#combining-multiple-commands" id="toc-combining-multiple-commands"><span class="toc-section-number">4.5</span> Combining multiple commands</a>
+  - <a href="#history-and-pipes" id="toc-history-and-pipes"><span class="toc-section-number">4.6</span> History and pipes</a>
+- <a href="#shell-scripts" id="toc-shell-scripts"><span class="toc-section-number">5</span> Shell scripts</a>
+  - <a href="#creating-and-running-a-script" id="toc-creating-and-running-a-script"><span class="toc-section-number">5.1</span> Creating and running a script</a>
+  - <a href="#generalize-your-script" id="toc-generalize-your-script"><span class="toc-section-number">5.2</span> Generalize your script</a>
+  - <a href="#optional-text-processing-with-unix-tools" id="toc-optional-text-processing-with-unix-tools"><span class="toc-section-number">5.3</span> (Optional) Text processing with Unix tools</a>
+  - <a href="#optional-language-interpreters-are-also-shell-commands" id="toc-optional-language-interpreters-are-also-shell-commands"><span class="toc-section-number">5.4</span> (Optional) Language interpreters are also shell commands</a>
+- <a href="#loops" id="toc-loops"><span class="toc-section-number">6</span> Loops</a>
+  - <a href="#a-basic-loop" id="toc-a-basic-loop"><span class="toc-section-number">6.1</span> A basic loop</a>
+  - <a href="#simplify-your-loop-with-globs" id="toc-simplify-your-loop-with-globs"><span class="toc-section-number">6.2</span> Simplify your loop with globs</a>
+  - <a href="#generalize-your-loop-with-unlimited-arguments" id="toc-generalize-your-loop-with-unlimited-arguments"><span class="toc-section-number">6.3</span> Generalize your loop with unlimited arguments</a>
+  - <a href="#make-your-script-executable" id="toc-make-your-script-executable"><span class="toc-section-number">6.4</span> Make your script executable</a>
+- <a href="#finding-things" id="toc-finding-things"><span class="toc-section-number">7</span> Finding things</a>
+  - <a href="#find" id="toc-find"><span class="toc-section-number">7.1</span> Find</a>
+  - <a href="#grep" id="toc-grep"><span class="toc-section-number">7.2</span> Grep</a>
+- <a href="#shell-extras" id="toc-shell-extras"><span class="toc-section-number">8</span> Shell extras</a>
+- <a href="#credits" id="toc-credits"><span class="toc-section-number">9</span> Credits</a>
+- <a href="#references" id="toc-references"><span class="toc-section-number">10</span> References</a>
+- <a href="#data-sources" id="toc-data-sources"><span class="toc-section-number">11</span> Data Sources</a>
 
 # Introducing the shell
 
 ## Reasons to use the shell
 
 1.  Automate basic tasks
-2.  Underlies many other open source languages and applications and can
-    be used to glue them together
-3.  Essential for system administration, remote computing, and
-    high-performance computing
+2.  Underlies many other open source languages and applications and can be used to glue them together
+3.  Essential for system administration, remote computing, and high-performance computing
 4.  Many concise special-purpose tools that can make your life easier
 5.  Complements more fully-featured application programming languages
 
-## \"Unix\"
+## "Unix"
 
 Powerpoint slides: Unix family tree
 
@@ -72,36 +61,25 @@ Powerpoint slides: Unix family tree
 2.  Roughly compatible, with similar (or identical) shells and tools
 3.  The environment in which most open-source software was written
 
-## \"Shell\"
+## "Shell"
 
--   Broadly speaking, there is a tension between making computer systems
-    fast and making them easy to use.
--   A common solution is to create a 2-layer architecture: A fast,
-    somewhat opaque core surrounded by a more friendly scriptable
-    interface (also referred to as \"hooks\" or an \"API\"). Examples of
-    this include video games, Emacs and other highly customizable code
-    editors, and high-level special-purpose languages like Stata and
-    Mathematica.
--   Unix shell is the scriptable **shell** around the operating system.
-    It provides a simple interface for making the operating system do
-    work, without having to know exactly how it accomplishes that work.
+- Broadly speaking, there is a tension between making computer systems fast and making them easy to use.
+- A common solution is to create a 2-layer architecture: A fast, somewhat opaque core surrounded by a more friendly scriptable interface (also referred to as "hooks" or an "API"). Examples of this include video games, Emacs and other highly customizable code editors, and high-level special-purpose languages like Stata and Mathematica.
+- Unix shell is the scriptable **shell** around the operating system. It provides a simple interface for making the operating system do work, without having to know exactly how it accomplishes that work.
 
 ## The past is always with us
 
-The design and terminology of modern computers is based on metaphors
-from a previous age.
+The design and terminology of modern computers is based on metaphors from a previous age.
 
 1.  Files and folders
 2.  Teletype input and output
-3.  Modern touch devices don\'t expose the file system, so you may be
-    less comfortable with navigating directory trees than people whose
-    primary computing devices were desktop computers
+3.  Modern touch devices don't expose the file system, so you may be less comfortable with navigating directory trees than people whose primary computing devices were desktop computers
 
 # Navigating files and directories
 
 ## File system layout
 
-Powerpoint slides: \"Navigating files and directories\"
+Powerpoint slides: "Navigating files and directories"
 
 ## Who are you?
 
@@ -117,8 +95,7 @@ whoami
     pwd                             # Print Working Directory
     ```
 
-2.  By default, this is probably your home directory (discuss how to
-    view this in Finder or File Explorer)
+2.  By default, this is probably your home directory (discuss how to view this in Finder or File Explorer)
 
     1.  Linux
 
@@ -138,7 +115,7 @@ whoami
         C:\Users\nelle
         ```
 
-## What\'s in this directory?
+## What's in this directory?
 
 1.  List the contents of the directory
 
@@ -159,11 +136,9 @@ ls --help                       # In-line help info; should work in Windows
 man ls                          # Manual for "ls"
 ```
 
--   You can navigate through the man page using the space bar and arrow
-    keys
--   Quit man with \"q\"
--   Online references are available for Windows users who don\'t have
-    man pages: <https://linux.die.net/>
+- You can navigate through the man page using the space bar and arrow keys
+- Quit man with "q"
+- Online references are available for Windows users who don't have man pages: <https://linux.die.net/>
 
 ## Exploring other directories
 
@@ -182,8 +157,7 @@ man ls                          # Manual for "ls"
     cd exercise-data
     ```
 
-3.  Now that you\'re \"in\" a new location, the context for your
-    commands is different
+3.  Now that you're "in" a new location, the context for your commands is different
 
     ``` bash
     pwd
@@ -194,8 +168,7 @@ man ls                          # Manual for "ls"
     cd shell-lesson-data
     ```
 
-4.  Move up the directory tree `.` is shorthand for \"current
-    directory\"; `..` is shorthand for \"parent directory\"
+4.  Move up the directory tree `.` is shorthand for "current directory"; `..` is shorthand for "parent directory"
 
     ``` bash
     # Show hidden files, including current and parent directories
@@ -215,12 +188,10 @@ man ls                          # Manual for "ls"
     cd -   # go back to previous directory
     ```
 
-## Relative vs. absolute paths
+## Relative vs. absolute paths
 
-1.  An absolute path specifies a location from the root of the file
-    system.
-2.  A relative path specifies a location starting from the current
-    location.
+1.  An absolute path specifies a location from the root of the file system.
+2.  A relative path specifies a location starting from the current location.
 
 # Working with files and directories
 
@@ -248,8 +219,7 @@ man ls                          # Manual for "ls"
     ls -FR ../project
     ```
 
-3.  Create a text file. Note that everything is available through the
-    file browser and the terminal.
+3.  Create a text file. Note that everything is available through the file browser and the terminal.
 
     ``` bash
     cd thesis
@@ -332,10 +302,9 @@ man ls                          # Manual for "ls"
 
 ## Create a backup archive
 
-Deletion is forever. Consider making a backup archive as part of your
-workflow.
+Deletion is forever. Consider making a backup archive as part of your workflow.
 
-1.  Create an archive with `tar` (\"tape archive\").
+1.  Create an archive with `tar` ("tape archive").
 
     ``` bash
     cd ~/Desktop/shell-lesson-data/exercise-data/
@@ -344,8 +313,7 @@ workflow.
     tar -cf writing.tar writing/
     ```
 
-2.  Create a compressed (zipped) archive `tar` is an old utility and can
-    be finicky about the order of flags.
+2.  Create a compressed (zipped) archive.
 
     ``` bash
     # [a]uto-compress the archive based on its file extension
@@ -357,6 +325,8 @@ workflow.
     # FYI, linux servers frequently use g[z]ip
     tar -z -cf writing.tgz writing/
     ```
+
+    `tar` is an old utility and can be finicky about the order of flags.
 
 3.  Extract your archive
 
@@ -371,8 +341,7 @@ workflow.
     ls writing_backup
     ```
 
-4.  There are many useful utilities:
-    <https://www.gnu.org/software/coreutils/manual/coreutils.html>
+4.  There are many useful utilities: <https://www.gnu.org/software/coreutils/manual/coreutils.html>
 
 ## Operations with multiple files and directories
 
@@ -384,9 +353,7 @@ workflow.
     cp creatures/minotaur.dat creatures/unicorn.dat creatures_backup/
     ```
 
-2.  Copy using globs (\"globals\") You can match a single character with
-    ? or unlimited characters with \*. This is an example of *shell
-    expansion*.
+2.  Copy using globs ("globals") You can match a single character with ? or unlimited characters with \*. This is an example of *shell expansion*.
 
     ``` bash
     mkdir proteins_backup
@@ -397,12 +364,11 @@ workflow.
 
 # Pipes and filters
 
-The \"Unix Philosophy\" is to combine many small tools that do one job
-into a processing pipeline.
+The "Unix Philosophy" is to combine many small tools that do one job into a processing pipeline.
 
 ## Motivating example with `wc`
 
-FYI, .pdb is Protein Data Bank format
+FYI, `.pdb` is the Protein Data Bank format
 
 1.  Count words in a file using `wc`
 
@@ -438,12 +404,12 @@ ls lengths.txt
 cat lengths.txt       # Inspect contents
 head -n 1 lengths.txt # Inspect 1st line
 less lengths.txt      # Inspect with pager
+
 ```
 
 ## Filtering output
 
-1.  The `sort` command run the file input through a filter and returns
-    the filtered result.
+1.  The `sort` command runs the file input through a filter and returns the filtered result.
 
     ``` bash
     sort lengths.txt    # alphanumeric sort (i.e. text)
@@ -471,9 +437,7 @@ less lengths.txt      # Inspect with pager
 
 ## Passing output to another command
 
-Pipe output from one command directly into a second command without
-creating an intermediate file. This is the cornerstone of Unix
-workflows.
+Pipe output from one command directly into a second command without creating an intermediate file. This is the cornerstone of Unix workflows.
 
 ``` bash
 sort -n lengths.txt |  head -n 1
@@ -481,8 +445,7 @@ sort -n lengths.txt |  head -n 1
 
 ## Combining multiple commands
 
-Daisy-chain your commands together. As long as the output of command X
-is a legitimate input for command Y, it will work.
+Daisy-chain your commands together. As long as the output of command X is a legitimate input for command Y, it will work.
 
 ``` bash
 # Return to the beginning
@@ -494,11 +457,10 @@ wc -l *.pdb | sort -n | head -n 1
 
 ## History and pipes
 
-1.  The terminal saves your command history (typically 500 or 1000
-    commands)
+1.  The terminal saves your command history (typically 500 or 1000 commands)
 
-    -   You can see previous commands using the up/down arrows
-    -   You can edit the command that\'s currently visible and run it
+    - You can see previous commands using the up/down arrows
+    - You can edit the command that's currently visible and run it
 
 2.  Once your command history gets big, you might want to search it:
 
@@ -535,9 +497,7 @@ We should save this stuff and reuse it.
 
 ## Generalize your script
 
-1.  Use a special variable to run the script on any file (`$1` returns
-    the value of a variable; `""` ensures that it works if there are
-    spaces.)
+1.  Use a special variable to run the script on any file (`$1` returns the value of a variable; `""` ensures that it works if there are spaces.)
 
     ``` bash
     nano middle.sh
@@ -610,7 +570,7 @@ python script.py | cut -d , -f 2 | sort | uniq
 
 # Loops
 
-Don\'t repeat yourself.
+Don't repeat yourself.
 
 ## A basic loop
 
@@ -651,8 +611,7 @@ bash latin.sh
 
 ## Generalize your loop with unlimited arguments
 
-1.  Create a separate directory for your scripts so that you can find
-    them
+1.  Create a separate directory for your scripts so that you can find them
 
     ``` bash
     cd ~/Desktop/shell-lesson-data/exercise-data/
@@ -744,14 +703,11 @@ find . -name "*.txt"
 
 ## Grep
 
-Grep is a powerful tool for matching text patterns by using *regular
-expressions*. You can find introductory documentation for regular
-expressions in the References section.
+Grep is a powerful tool for matching text patterns by using *regular expressions*. You can find introductory documentation for regular expressions in the References section.
 
 # Shell extras
 
-Consult the Wooledge Bash Guide (see references below) for more on these
-topics:
+Consult the Wooledge Bash Guide (see references below) for more on these topics:
 
 1.  SSH
 2.  Permissions
@@ -768,20 +724,14 @@ topics:
 
 # References
 
-1.  Instructor notes for \"The Unix Shell\":
-    <https://swcarpentry.github.io/shell-novice/guide/>
-2.  A list of command line utilities: <https://ss64.com/bash/>
-3.  GNU core utilities:
-    <https://www.gnu.org/software/coreutils/manual/coreutils.html>
-4.  Bash guide: <https://mywiki.wooledge.org/BashGuide>
-5.  Shell redirection operators(1):
-    <https://www.redhat.com/sysadmin/linux-shell-redirection-pipelining>
-6.  Shell redirection operators (2):
-    <https://www.gnu.org/software/bash/manual/html_node/Redirections.html>
-7.  Grep regular expressions:
-    <https://www.gnu.org/software/grep/manual/html_node/Regular-Expressions.html>
+1.  A list of command line utilities: <https://ss64.com/bash/>
+2.  GNU core utilities: <https://www.gnu.org/software/coreutils/manual/coreutils.html>
+3.  Bash guide: <https://mywiki.wooledge.org/BashGuide>
+4.  Shell redirection operators(1): <https://www.redhat.com/sysadmin/linux-shell-redirection-pipelining>
+5.  Shell redirection operators (2): <https://www.gnu.org/software/bash/manual/html_node/Redirections.html>
+6.  Grep regular expressions: <https://www.gnu.org/software/grep/manual/html_node/Regular-Expressions.html>
+7.  Using zsh on MacOS: <https://scriptingosx.com/2019/06/moving-to-zsh/>
 
 # Data Sources
 
-1.  Lesson data:
-    <http://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip>
+1.  Lesson data: <http://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip>
